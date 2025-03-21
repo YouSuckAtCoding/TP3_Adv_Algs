@@ -8,17 +8,6 @@ class Graph:
         self.matrix[i][j] = weight
         if bidirectional: self.matrix[j][i] = weight
 
-    def minKey(self, key, mstSet):
-
-        min = float('inf')
-
-        for x in range(self.vertices):
-            if key[x] < min and mstSet[x] == False:
-                min = key[x]
-                min_index = x
-        
-        return min_index
-    
     def printMST(self, parent):
         total = 0
         print("Edge \tWeight")
@@ -27,30 +16,40 @@ class Graph:
             total+=self.matrix[parent[i]][i]
         return total
 
+    def minDist(self, dist, visited):
+
+        min = float('inf')
+
+        for x in range(self.vertices):
+            if dist[x] < min and visited[x] == False:
+                min = dist[x]
+                min_index = x
+        
+        return min_index
+
     def primMst(self):
 
-        key = [float('inf')] * self.vertices
-        parent = [None] * self.vertices
+        dist = [float('inf')] * self.vertices
+        mst = [None] * self.vertices
+        visited = [False] * self.vertices
 
-        key[0] = 0
-        mstSet = [False] * self.vertices
-
-        parent[0] = -1
+        dist[0] = 0
+        mst[0] = -1
 
         for x in range(self.vertices):
 
-            u = self.minKey(key, mstSet)
+            u = self.minDist(dist, visited)
 
-            mstSet[u] = True
+            visited[u] = True
 
             for j in range(self.vertices):
-                if self.matrix[u][j] > 0 and mstSet[j] == False \
-                and key[j] > self.matrix[u][j]:
+                if self.matrix[u][j] != float('inf') and visited[j] == False \
+                and dist[j] > self.matrix[u][j]:
 
-                    key[j] = self.matrix[u][j]
-                    parent[j] = u
+                    dist[j] = self.matrix[u][j]
+                    mst[j] = u
         
-        return self.printMST(parent)
+        return self.printMST(mst)
     
     def floyd(self):
 

@@ -11,4 +11,4 @@ if __name__ == "__main__":
     grp.add_edge("GRU", "POA", 870)
     grp.add_edge("POA", "REC", 3000)
 
-    print(grp.djikstra("GRU", "POA"))
+    print(grp.djikstra("GRU", "REC"))
